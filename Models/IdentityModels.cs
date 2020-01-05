@@ -20,6 +20,9 @@ namespace WebStore.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
@@ -29,5 +32,6 @@ namespace WebStore.Models
         {
             return new ApplicationDbContext();
         }
+
     }
 }
