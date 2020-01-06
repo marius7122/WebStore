@@ -44,5 +44,49 @@ namespace WebStore.Controllers
             Product product = db.Products.Find(id);
             return View(product);
         }
+
+        public ActionResult Edit(int id)
+        {
+            Product product = db.Products.Find(id);
+            return View(product);
+        }
+
+        [HttpPut]
+        public ActionResult Edit(int id, Product modifiedProduct)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Product product = db.Products.Find(id);
+                    if (TryUpdateModel(product))
+                    {
+                        product.Title = modifiedProduct.Title;
+                        product.Description = modifiedProduct.Description;
+                        product.Price = modifiedProduct.Price;
+                        TempData["message"] = "Produsul a fost modificat!";
+                        db.SaveChanges();
+                    }
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View(modifiedProduct);
+                }
+            }
+            catch (Exception e)
+            {
+                return View(modifiedProduct);
+            }
+        }
+
+        public ActionResult Delete(int id)
+        {
+            Product product = db.Products.Find(id);
+            db.Products.Remove(product);
+            TempData["message"] = "Produsul a fost sters!";
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
     }
 }
