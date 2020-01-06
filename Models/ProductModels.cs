@@ -16,6 +16,7 @@ namespace WebStore.Models
         [Required]
         public double Price { get; set; }
 
+        public virtual Category Category { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
     }
 
