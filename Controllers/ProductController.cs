@@ -13,8 +13,7 @@ namespace WebStore.Controllers
 
         public ActionResult Index()
         {
-            var products = from product in db.Products
-                           select product;
+            var products = db.Products.Include("Category");
 
             return View(products);
         }
@@ -46,13 +45,14 @@ namespace WebStore.Controllers
         
         public ActionResult Show(int id)
         {
-            Product product = db.Products.Find(id);
+            Product product = db.Products.Include("Category").SingleOrDefault(x => x.ID == id);
             return View(product);
         }
 
         public ActionResult Edit(int id)
         {
             Product product = db.Products.Find(id);
+            product.Categories = GetAllCategories();
             return View(product);
         }
 
@@ -66,9 +66,6 @@ namespace WebStore.Controllers
                     Product product = db.Products.Find(id);
                     if (TryUpdateModel(product))
                     {
-                        product.Title = modifiedProduct.Title;
-                        product.Description = modifiedProduct.Description;
-                        product.Price = modifiedProduct.Price;
                         TempData["message"] = "Produsul a fost modificat!";
                         db.SaveChanges();
                     }

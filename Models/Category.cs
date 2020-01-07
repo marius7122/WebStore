@@ -12,6 +12,7 @@ namespace WebStore.Models
         public int Id { get; set; }
 
         [Required]
+        [Display(Name = "Category")]
         public string Name { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
