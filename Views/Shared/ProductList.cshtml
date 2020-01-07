@@ -36,7 +36,14 @@
                 @Html.DisplayFor(modelItem => item.Category.Name)
             </td>          
             <td>
-                @Html.DisplayFor(modelItem => item.AverageRating)
+                @if (item.AverageRating != 0)
+                {
+                    @Html.DisplayFor(modelItem => item.AverageRating)
+                }
+                else
+                {
+                    @("No reviews")
+                }
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |

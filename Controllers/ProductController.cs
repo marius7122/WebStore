@@ -97,21 +97,32 @@ namespace WebStore.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Search(string SearchName)
+        public ActionResult Search(string SearchName, string OrderBy, string Order)
         {
             var products = db.Products;
 
-            if (!string.IsNullOrEmpty(SearchName))
-            {
-                SearchName = SearchName.ToLower();
-                var searchedProducts = products.Include("Category").Where(m => m.Title.ToLower().Contains(SearchName));
+            SearchName = SearchName.ToLower();
+            var searchedProducts = products.Include("Category").Where(m => m.Title.ToLower().Contains(SearchName));
                 
-
-                ViewBag.SearchName = SearchName;
-                return View(searchedProducts);
+            // ascending order
+            if(Order == "1")
+            {
+                if (OrderBy == "1")
+                    searchedProducts = searchedProducts.OrderBy(m => m.Price);
+                else
+                    searchedProducts = searchedProducts.OrderBy(m => m.AverageRating);
             }
+            // descending order
             else
-                return RedirectToAction("Index");
+            {
+                if (OrderBy == "1")
+                    searchedProducts = searchedProducts.OrderByDescending(m => m.Price);
+                else
+                    searchedProducts = searchedProducts.OrderByDescending(m => m.AverageRating);
+            }
+
+            ViewBag.SearchName = SearchName;
+            return View(searchedProducts);
         }
 
 
