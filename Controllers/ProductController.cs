@@ -96,6 +96,21 @@ namespace WebStore.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult Search(string SearchName)
+        {
+            var products = db.Products;
+
+            if (!string.IsNullOrEmpty(SearchName))
+            {
+                SearchName = SearchName.ToLower();
+                var searchedProducts = products.Include("Category").Where(m => m.Title.ToLower().Contains(SearchName));
+                ViewBag.SearchName = SearchName;
+                return View(searchedProducts);
+            }
+            else
+                return RedirectToAction("Index");
+        }
+
 
 
         [NonAction]

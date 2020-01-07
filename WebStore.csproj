@@ -251,6 +251,9 @@
     <Content Include="Views\Category\Edit.cshtml" />
     <Content Include="Views\Category\Delete.cshtml" />
     <Content Include="Views\Review\Edit.cshtml" />
+    <Content Include="Views\Shared\ProductList.cshtml" />
+    <Content Include="Views\Shared\SearchBar.cshtml" />
+    <Content Include="Views\Product\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

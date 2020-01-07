@@ -1,0 +1,13 @@
+﻿@model IEnumerable<WebStore.Models.Product>
+
+@{
+    ViewBag.Title = "Products";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Html.Partial("SearchBar")
+
+<h3>Search for: @ViewBag.SearchName</h3>
+
+@Html.Partial("ProductList")
