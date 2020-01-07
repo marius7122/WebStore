@@ -45,7 +45,10 @@ namespace WebStore.Controllers
         
         public ActionResult Show(int id)
         {
-            Product product = db.Products.Include("Category").SingleOrDefault(x => x.ID == id);
+            Product product = db.Products
+                .Include("Category")
+                .Where(x => x.ID == id)
+                .FirstOrDefault();
             return View(product);
         }
 
@@ -66,7 +69,7 @@ namespace WebStore.Controllers
                     Product product = db.Products.Find(id);
                     if (TryUpdateModel(product))
                     {
-                        TempData["message"] = "Produsul a fost modificat!";
+                        TempData["message"] = "Product was updated!";
                         db.SaveChanges();
                     }
                     return RedirectToAction("Index");

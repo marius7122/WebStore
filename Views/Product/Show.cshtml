@@ -38,9 +38,63 @@
             @Html.DisplayNameFor(model => model.Category.Name)
         </dt>
 
+        <dd>
+            @Html.DisplayFor(model => model.Category.Name)
+        </dd>
+
     </dl>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+<hr />
+
+<div class="jumbotron">
+    <p>Review this product</p>
+    @using (Html.BeginForm(actionName: "Create", controllerName: "Review"))
+    {
+        @Html.Hidden("ProductID", Model.ID)
+        <div class="form-horizontal">
+            <label>Rating</label>
+            <select name="Rating">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+
+            <br />
+            <label>Review</label> <br />
+            <textarea name="Comment" rows="4" cols="100"></textarea>
+
+            <br />
+            <input type="submit" value="Submit" class="btn btn-default">
+        </div>
+    }
+</div>
+
+<h3>Comments</h3>
+<table class="table">
+    <tr>
+        <th>Rating</th>
+        <th>Review</th>
+    </tr>
+    @foreach (var item in Model.Reviews)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", "Review", new { id = item.ID }, null) |
+                @Html.ActionLink("Delete", "Delete", "Review", new { id = item.ID }, null)
+            </td>
+        </tr>
+    }
+</table>
