@@ -49,6 +49,8 @@ namespace WebStore.Controllers
                 .Include("Category")
                 .Where(x => x.ID == id)
                 .FirstOrDefault();
+
+            product.AverageRating = AverageRating(id);
             return View(product);
         }
 
@@ -95,8 +97,9 @@ namespace WebStore.Controllers
         }
 
 
+
         [NonAction]
-        public IEnumerable<SelectListItem> GetAllCategories()
+        private IEnumerable<SelectListItem> GetAllCategories()
         {
             // generam o lista goala
             var selectList = new List<SelectListItem>();
@@ -119,5 +122,28 @@ namespace WebStore.Controllers
             // returnam lista de categorii
             return selectList;
         }
+        
+        [NonAction]
+        private double AverageRating(int id)
+        {
+            double rating = 0;
+            double count = 0;
+            var reviews = db.Reviews
+                .Where(r => r.ProductID == id)
+                .ToArray();
+
+            if (reviews == null || reviews.Length == 0)
+                return 0;
+
+            foreach(var review in reviews)
+            {
+                rating += review.Rating;
+                count += 1;
+            }
+
+            return Math.Round(rating / count, 2);
+        }
+
+
     }
 }

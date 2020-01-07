@@ -35,6 +35,21 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.AverageRating)
+        </dt>
+
+        <dd>
+            @if(Model.AverageRating == 0)
+            {
+                @("No rating")
+            }
+            else 
+            {
+                @Html.DisplayFor(model => model.AverageRating)
+            }
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Category.Name)
         </dt>
 
