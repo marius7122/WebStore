@@ -19,12 +19,18 @@ namespace WebStore.Controllers
                 db.Reviews.Add(review);
                 db.SaveChanges();
                 TempData["message"] = "Comment was submited!";
+
+                // update product rating
+                Product product = db.Products.Find(review.ProductID);
+                product.AverageRating = ProductController.AverageRating(review.ProductID);
+                UpdateModel(product);
+                db.SaveChanges();
             }
             else
             {
                 TempData["message"] = "Comment was not submited!";
             }
-            return Redirect(Request.UrlReferrer.ToString());
+            return RedirectToAction("Show", "Product", new { id = review.ProductID });
         }
 
         public ActionResult Edit(int id)
@@ -39,10 +45,11 @@ namespace WebStore.Controllers
             try
             {
                 if (ModelState.IsValid)
-                { 
+                {
                     Review review = db.Reviews.Find(id);
                     if (TryUpdateModel(review))
                     {
+                        TempData["message"] = "Review was updated!";
                         db.SaveChanges();
                     }
                     return RedirectToAction("Show", "Product", new { id = review.ProductID });
@@ -63,7 +70,7 @@ namespace WebStore.Controllers
             Review review = db.Reviews.Find(id);
             db.Reviews.Remove(review);
             db.SaveChanges();
-            return Redirect(Request.UrlReferrer.ToString());
+            return RedirectToAction("Show", "Product", new { id = review.ProductID });
         }
     }
 }

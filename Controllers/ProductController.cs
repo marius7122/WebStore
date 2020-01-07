@@ -9,7 +9,7 @@ namespace WebStore.Controllers
 {
     public class ProductController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private static ApplicationDbContext db = new ApplicationDbContext();
 
         public ActionResult Index()
         {
@@ -47,10 +47,11 @@ namespace WebStore.Controllers
         {
             Product product = db.Products
                 .Include("Category")
+                .Include("Reviews")
                 .Where(x => x.ID == id)
                 .FirstOrDefault();
 
-            product.AverageRating = AverageRating(id);
+            ModelState.Clear();
             return View(product);
         }
 
@@ -104,6 +105,8 @@ namespace WebStore.Controllers
             {
                 SearchName = SearchName.ToLower();
                 var searchedProducts = products.Include("Category").Where(m => m.Title.ToLower().Contains(SearchName));
+                
+
                 ViewBag.SearchName = SearchName;
                 return View(searchedProducts);
             }
@@ -139,7 +142,7 @@ namespace WebStore.Controllers
         }
         
         [NonAction]
-        private double AverageRating(int id)
+        public static double AverageRating(int id)
         {
             double rating = 0;
             double count = 0;

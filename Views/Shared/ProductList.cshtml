@@ -12,8 +12,10 @@
             @Html.DisplayNameFor(model => model.Price)
         </th>
         <th>
-
             @Html.DisplayName("Category")
+        </th>
+        <th>
+            @Html.DisplayName("Rating")
         </th>
         <th></th>
     </tr>
@@ -32,6 +34,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Category.Name)
+            </td>          
+            <td>
+                @Html.DisplayFor(modelItem => item.AverageRating)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
