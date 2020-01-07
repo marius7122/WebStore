@@ -21,7 +21,12 @@ namespace WebStore.Controllers
         
         public ActionResult Create()
         {
-            return View();
+            Product product = new Product();
+
+            // preluam lista de categorii din metoda GetAllCategories()
+            product.Categories = GetAllCategories();
+
+            return View(product);
         }
 
         [HttpPost]
@@ -87,6 +92,32 @@ namespace WebStore.Controllers
             TempData["message"] = "Produsul a fost sters!";
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+
+        [NonAction]
+        public IEnumerable<SelectListItem> GetAllCategories()
+        {
+            // generam o lista goala
+            var selectList = new List<SelectListItem>();
+
+            // Extragem toate categoriile din baza de date
+            var categories = from cat in db.Categories
+                             select cat;
+
+            // iteram prin categorii
+            foreach (var category in categories)
+            {
+                // Adaugam in lista elementele necesare pentru dropdown
+                selectList.Add(new SelectListItem
+                {
+                    Value = category.Id.ToString(),
+                    Text = category.Name.ToString()
+                });
+            }
+
+            // returnam lista de categorii
+            return selectList;
         }
     }
 }

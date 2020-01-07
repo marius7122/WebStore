@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace WebStore.Models
 {
@@ -15,6 +16,8 @@ namespace WebStore.Models
         public string Description { get; set; }
         [Required]
         public double Price { get; set; }
+
+        public IEnumerable<SelectListItem> Categories { get; set; }
 
         public virtual Category Category { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
