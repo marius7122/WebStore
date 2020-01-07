@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WebStore.Models;
+using Microsoft.AspNet.Identity;
 
 namespace WebStore.Controllers
 {
@@ -29,13 +30,24 @@ namespace WebStore.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator,Editor")]
         public ActionResult Create(Product product)
         {
+            product.UserId = User.Identity.GetUserId();
             try
             {
-                db.Products.Add(product);
-                db.SaveChanges();
-                return Redirect("/Product/Show/" + product.ID);
+                if (User.IsInRole("Administrator"))
+                {
+                    db.Products.Add(product);
+                    db.SaveChanges();
+                    return Redirect("/Product/Show/" + product.ID);
+                }
+                else
+                {
+                    db.PendingProducts.Add(product);
+                    db.SaveChanges();
+                    return Redirect("/Product/Show/" + product.ID);
+                }
             }
             catch (Exception e)
             {
@@ -55,8 +67,10 @@ namespace WebStore.Controllers
             return View(product);
         }
 
+        [Authorize(Roles = "Administrator,Editor")]
         public ActionResult Edit(int id)
         {
+            // check if was posted by editor
             Product product = db.Products.Find(id);
             product.Categories = GetAllCategories();
             return View(product);
@@ -125,7 +139,8 @@ namespace WebStore.Controllers
             return View(searchedProducts);
         }
 
-
+  
+        
 
         [NonAction]
         private IEnumerable<SelectListItem> GetAllCategories()
@@ -172,7 +187,6 @@ namespace WebStore.Controllers
 
             return Math.Round(rating / count, 2);
         }
-
 
     }
 }

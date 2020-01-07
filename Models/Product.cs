@@ -19,6 +19,7 @@ namespace WebStore.Models
         [Display(Name = "Rating")]
         public double AverageRating { get; set; }
         public int CategoryId { get; set; }
+        public string UserId { get; set; }
 
         public IEnumerable<SelectListItem> Categories { get; set; }
 
